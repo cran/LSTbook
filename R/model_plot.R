@@ -31,9 +31,10 @@ model_plot <- function(mod, nlevels = 3,
   Skeleton <- coerce_model_for_graph(mod, nlevels = nlevels,
                                       interval = interval,
                                       level = level)
-  # Get rid of response and residual if they are in the Skeleton
-  if (".response" %in% names(Skeleton))
-    Skeleton <- Skeleton |> dplyr::select(-.response, -.resid)
+  # Get rid of any residuals if they are in the Skeleton
+  if (".resid" %in% names(Skeleton))
+    Skeleton <- Skeleton |> dplyr::select(-data$.response, -.data$resid)
+    # added .data$ in the above line to avoid "no visible binding for global variable" note from check
   # Add a placeholder explanatory variable if model has none.
   if (names(Skeleton)[1] == ".output")
     Skeleton <- cbind(tibble(All = "all"), Skeleton)

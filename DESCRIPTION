@@ -1,6 +1,6 @@
 Package: LSTbook
 Title: Data and Software for "Lessons in Statistical Thinking"
-Version: 0.5.0
+Version: 0.6
 Authors@R: c(
     person(given = "Daniel", family = "Kaplan", email = "dtkaplan@gmail.com", role = c("aut", "cre")),
     person(given = "Randall", family = "Pruim", email = "rpruim@calvin.edu", role = "aut") )
@@ -17,18 +17,17 @@ LazyDataCompression: xz
 Imports: rlang, dplyr, ggplot2 (>= 3.4.4), broom, glue, stats, MASS,
         tibble, stringi
 RoxygenNote: 7.2.1
-Suggests: igraph, graphics, testthat (>= 3.0.0), moderndive,
-        palmerpenguins, babynames, knitr, rmarkdown, stringdist,
-        mosaicData
+Suggests: igraph, mosaicData, moderndive, palmerpenguins, stringdist,
+        rmarkdown, knitr, testthat
 Config/testthat/edition: 3
 VignetteBuilder: knitr
-URL: https://dtkaplan.github.io/LSTbook/
-BugReports: https://github.com/dtkaplan/LSTbook/issues/
+URL: https://github.com/dtkaplan/LSTbook
+BugReports: https://github.com/dtkaplan/LSTbook/issues
 License: MIT + file LICENSE
 NeedsCompilation: no
-Packaged: 2024-02-22 21:50:41 UTC; kaplan
+Packaged: 2024-12-06 13:13:57 UTC; kaplan
 Author: Daniel Kaplan [aut, cre],
   Randall Pruim [aut]
 Maintainer: Daniel Kaplan <dtkaplan@gmail.com>
 Repository: CRAN
-Date/Publication: 2024-02-23 19:20:15 UTC
+Date/Publication: 2024-12-07 13:40:03 UTC

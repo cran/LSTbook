@@ -7,7 +7,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(FEV)
+#' @usage data(CRDS)
 #'
 #' @format A data.frame with one row for each of 645 youngsters.
 #' - age in years
@@ -21,4 +21,4 @@
 #' @source Cummiskey, et al. (2020) "Causal Inference in Introductory Statistics Courses"
 #' *Journal of Statistics Education* **28**(1) \doi{10.1080/10691898.2020.1713936}
 
-"FEV"
+"CRDS"

@@ -28,7 +28,7 @@ sim_06
 
 ## -----------------------------------------------------------------------------
 mtcars |> 
-  sample(replace = TRUE) |> # resampling here!
+  take_sample(replace = TRUE) |> # resampling here!
   model_train(mpg ~ hp) |> 
   conf_interval() |> 
   filter(term == "hp") |>

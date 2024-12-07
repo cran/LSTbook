@@ -1,8 +1,8 @@
 # For the user's convenience, attach packages that are often used in the textbook
 
 pkgs_to_attach <- c("ggplot2", "dplyr")
-optional_packages <- c("ggformula", "mosaicData", "moderndive",
-                       "palmerpenguins", "babynames")
+optional_packages <- c("mosaicData", "moderndive",
+                       "palmerpenguins")
 # if an optional package is installed, .onLoad() will attach it.
 add_to_attach <- function(pkg) {
   if (requireNamespace(pkg, quietly = TRUE))
@@ -30,7 +30,7 @@ is_attached <- function(x) {
 # to avoid notes in CRAN checks
 utils::globalVariables(c("data", "pf", "xend", "yend",
                          "label", "xticks", "ybase", "ymid",
-                         "ytop", ".lwr", ".output", ".response", ".resid",
+                         "ytop", ".lwr", ".output", ".resid",
                          "na.exclude", "left", "right"))
 
 ####

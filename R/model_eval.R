@@ -15,8 +15,8 @@
 #' - the explanatory variables
 #' - `.output` --- the output of the model that corresponds to the explanatory value
 #' - the `.lwr` and `.upr` bounds of the prediction or confidence interval
-#' - if training data is used as the input, the `.response` variable and the `.resid`. Note that
-#' the generic name `.response` is used, not the actual name of the model's response variable.
+#' - if training data is used as the input, then it's possible to calculate the residual. This
+#' will be called `.resid`.
 #'
 #' @examples
 #' mod <- mtcars |> model_train(mpg ~ hp + wt)
@@ -51,11 +51,11 @@ model_eval <- function(mod, data=NULL, ..., skeleton=FALSE, ncont=3,
        training_data <- data_from_tilde(get_training_data(mod),
                                         formula_from_mod(mod))
        eval_data <- training_data
+       # names(eval_data)[1] <- ".response"
        response_in_data <- TRUE
      }
   } else {
     eval_data <- training_data <- data
-    names(training_data)[1] <- ".response"
     # the argument data might or might not have the response name
     response_in_data <- response_var_name %in% names(data)
   }
@@ -71,8 +71,8 @@ model_eval <- function(mod, data=NULL, ..., skeleton=FALSE, ncont=3,
 
   if (interval == "prediction") {
     if (inherits(mod, "glm") && mod$call[[3]] == "binomial") {
-      warning("No prediction interval available. Using confidence interval.")
-      interval="confidence"
+      interval <- "none"
+      warning("No prediction interval available, since the response variable is effectively categorical, not quantitative.")
     }
   }
 
@@ -81,12 +81,16 @@ model_eval <- function(mod, data=NULL, ..., skeleton=FALSE, ncont=3,
     Fitted <- Fitted |> dplyr::select(".lwr", ".output", ".upr")
 
   if (response_in_data) {
-    Residuals <- data.frame(.resid = eval_data[[response_var_name]] - Fitted$.output)
-    names(training_data)[1] <- ".response" # give it a generic name
-    return(dplyr::bind_cols(training_data, Fitted, Residuals))
-  } else {
-    return(dplyr::bind_cols(eval_data, Fitted))
+    response_values <- eval_data[[response_var_name]]
+    if (is.numeric(response_values)) {
+      Residuals <- data.frame(.resid = response_values - Fitted$.output)
+      # names(training_data)[names(training_data) == response_var_name] <- ".response" # give it a generic name
+      return(dplyr::bind_cols(training_data, Fitted, Residuals))
+    }
   }
+
+  dplyr::bind_cols(eval_data, Fitted)
+
 }
 
 

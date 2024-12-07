@@ -45,11 +45,16 @@ eval_exp_list <- function(EL, data) {
     if (ncol(res[[k]]) == 1) {
       names(res[[k]]) <- deparse(EL[[k]])
     } else {
-      # just pull out the variable as one column, leaving the multi-column
+      # just pull out one column, leaving the multi-column
       # stuff for the annotation based on the model
       the_var <- all.vars(EL[[k]])[1]
-      res[[k]] <- data[the_var]
-      names(res[[k]]) <- the_var
+      if (is.na(the_var)) {
+        # the column is not based on a variable
+        res[[k]] <- NULL
+      } else {
+        res[[k]] <- data[the_var]
+        names(res[[k]]) <- the_var
+      }
     }
   }
 
@@ -74,12 +79,16 @@ data_from_tilde <- function(data, tilde) {
   tmp <- split_tilde(tilde)
   if ("right" %in% names(tmp)) {
     # Turn each into a data frame
-    Left <- eval_exp_list(tmp$left, data)
+    Res <- Left <- eval_exp_list(tmp$left, data)
     Right <- eval_exp_list(tmp$right, data)
-    cbind(Left, Right) # using cbind() to avoid the name repair in dplyr::bind_cols()
+    if (nrow(Right) > 0) {
+      # using cbind() to avoid the name repair in dplyr::bind_cols()
+      Res <- cbind(Left, Right)
+    }
   } else {
-    eval_exp_list(tmp, data)
+    Res <- eval_exp_list(tmp, data)
   }
+  Res
 }
 
 get_error_object_name <- function(msg) {
